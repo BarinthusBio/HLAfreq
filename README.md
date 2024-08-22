@@ -94,7 +94,7 @@ caf = HLAfreq.combineAF(aftab)
 ```
 
 ## Detailed examples
-For more detailed walkthroughs see [HLAfreq/examples](https://github.com/BarinthusBio/HLAfreq/tree/main/examples).
+For more detailed walkthroughs see [HLAfreq/examples](https://barinthusbio.github.io/HLAfreq/HLAfreq/examples.html).
 
 - [Single country](https://BarinthusBio.github.io/HLAfreq/HLAfreq/examples/single_country.html) download and combine
 - [Multi-country](https://BarinthusBio.github.io/HLAfreq/HLAfreq/examples/multi_country.html) download and combine, weight by population coverage
