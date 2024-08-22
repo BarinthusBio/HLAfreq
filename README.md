@@ -10,7 +10,7 @@ ability to mount an immune response to specific epitopes.
 Automated download of allele frequency data download from 
 [allele frequencies.net](http://www.allelefrequencies.net/).
 
-Source code is available at [Vaccitech/HLAfreq](https://github.com/Vaccitech/HLAfreq).
+Source code is available at [BarinthusBio/HLAfreq](https://github.com/BarinthusBio/HLAfreq).
 
 ## Details
 Estimates are combined by modelling allele frequency as a 
@@ -61,7 +61,7 @@ conda create -n hlafreq -c conda-forge -c bioconda python=3.10 numpy=1.25.2 pymc
 Conda should handle this automatically, but if you get errors check
 the package versions with `conda list`.
 
-If you do run into trouble please open an [issue](https://github.com/Vaccitech/HLAfreq/issues).
+If you do run into trouble please open an [issue](https://github.com/BarinthusBio/HLAfreq/issues).
 
 If you don't intend to use credible intervals you can install
 with pip: `pip install HLAfreq`.
@@ -94,15 +94,15 @@ caf = HLAfreq.combineAF(aftab)
 ```
 
 ## Detailed examples
-For more detailed walkthroughs see [HLAfreq/examples](https://github.com/Vaccitech/HLAfreq/tree/main/examples).
+For more detailed walkthroughs see [HLAfreq/examples](https://github.com/BarinthusBio/HLAfreq/tree/main/examples).
 
-- [Single country](https://vaccitech.github.io/HLAfreq/HLAfreq/examples/single_country.html) download and combine
-- [Multi-country](https://vaccitech.github.io/HLAfreq/HLAfreq/examples/multi_country.html) download and combine, weight by population coverage
-- [Using priors](https://vaccitech.github.io/HLAfreq/HLAfreq/examples/working_with_priors.html)
-- [Credible intervals](https://vaccitech.github.io/HLAfreq/HLAfreq/examples/credible_intervals.html)
+- [Single country](https://BarinthusBio.github.io/HLAfreq/HLAfreq/examples/single_country.html) download and combine
+- [Multi-country](https://BarinthusBio.github.io/HLAfreq/HLAfreq/examples/multi_country.html) download and combine, weight by population coverage
+- [Using priors](https://BarinthusBio.github.io/HLAfreq/HLAfreq/examples/working_with_priors.html)
+- [Credible intervals](https://BarinthusBio.github.io/HLAfreq/HLAfreq/examples/credible_intervals.html)
 
 ## Docs
-Full documentation at [HLAfreq/docs](https://vaccitech.github.io/HLAfreq/HLAfreq.html).
+Full documentation at [HLAfreq/docs](https://BarinthusBio.github.io/HLAfreq/HLAfreq.html).
 API documentation for functions are under the submodules on the left.
 - `HLAfreq.HLAfreq` documents most functions, specifically download and combine
 allele data.

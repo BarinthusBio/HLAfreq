@@ -168,6 +168,6 @@ def compare_estimates(AFtab, hdi, datasetID):
         )
         print(
             "There are several possible reasons, see the credible intervals example:"
-            "https://github.com/Vaccitech/HLAfreq/blob/main/examples/credible_intervals.ipynb"
+            "https://BarinthusBio.github.io/HLAfreq/HLAfreq/examples/working_with_priors.html"
         )
         print("If you have set `credible_interval` to < 0.95, this may be a non-issue.")

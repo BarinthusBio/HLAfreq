@@ -3,12 +3,12 @@ from setuptools import setup, find_packages
 setup(
     name="HLAfreq",
     version="0.0.3.dev2",
-    url="https://github.com/Vaccitech/HLAfreq",
+    url="https://github.com/BarinthusBio/HLAfreq",
     project_urls={
-        'Tracker': "https://github.com/Vaccitech/HLAfreq/issues"
+        'Tracker': "https://github.com/BarinthusBio/HLAfreq/issues"
     },
     author="David Wells",
-    author_email="david.wells@vaccitech.co.uk",
+    author_email="david.wells@BarinthusBio.co.uk",
     description="Download and combine HLA frequency data from multiple studies",
     long_description=open('README.md').read(),
     long_description_content_type="text/markdown",
