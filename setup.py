@@ -17,9 +17,9 @@ setup(
         'bs4',
         'requests',
         'pandas',
-        'numpy',
-        'matplotlib',
-        'scipy',
+        'numpy>=1.24.0',
+        'matplotlib>=3.6.0',
+        'scipy>=1.10.0',
         'pymc>=3',
         'arviz'
     ],
