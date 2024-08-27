@@ -5,3 +5,4 @@ writeup/
 envs/.venv
 build/
 dist/
+.coverage
