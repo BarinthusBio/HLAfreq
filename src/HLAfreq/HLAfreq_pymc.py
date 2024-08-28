@@ -29,10 +29,14 @@ def _make_c_array(
             raise AssertionError("The same allele appears multiple times in a dataset")
     if complete:
         if not HLAfreq.incomplete_studies(df, datasetID=datasetID).empty:
-            raise AssertionError("AFtab contains studies with AF that doesn't sum to 1. Check incomplete_studies(AFtab)")
+            raise AssertionError(
+                "AFtab contains studies with AF that doesn't sum to 1. Check incomplete_studies(AFtab)"
+            )
     if resolution:
         if not HLAfreq.check_resolution(df):
-            raise AssertionError("AFtab conains alleles at multiple resolutions, check check_resolution(AFtab)")
+            raise AssertionError(
+                "AFtab conains alleles at multiple resolutions, check check_resolution(AFtab)"
+            )
     if format:
         df = HLAfreq.formatAF(df, ignoreG)
     if add_unmeasured:
@@ -53,8 +57,10 @@ def _make_c_array(
     # The check is that the sum of allele i is the same
     for a, b in zip(np.apply_along_axis(sum, 0, c_array), df.groupby("allele").c.sum()):
         if not math.isclose(a, b):
-            raise AssertionError("Error making c_array sum of single allele"
-                                 "frequency differs between c_array and AFloc")
+            raise AssertionError(
+                "Error making c_array sum of single allele"
+                "frequency differs between c_array and AFloc"
+            )
     return c_array, allele_names
 
 
