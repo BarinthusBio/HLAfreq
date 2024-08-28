@@ -489,7 +489,7 @@ def combineAF(
             raise AssertionError("The same allele appears multiple times in a dataset")
     if complete:
         if not incomplete_studies(df, datasetID=datasetID).empty:
-            raise AssertionError("AFtab contains studies with AF that doesn't sum to 1. Checkincomplete_studies(AFtab)")
+            raise AssertionError("AFtab contains studies with AF that doesn't sum to 1. Check incomplete_studies(AFtab)")
     if resolution:
         if not check_resolution(df):
             raise AssertionError("AFtab conains alleles at multiple resolutions, check check_resolution(AFtab)")
@@ -549,7 +549,7 @@ def single_loci(AFtab):
         AFtab (pd.DataFrame): Allele frequency data
     """
     if not len(AFtab.loci.unique()) == 1:
-        raise AssertionError("'AFtab' must conatain only 1 loci")
+        raise AssertionError("'AFtab' must contain only 1 loci")
 
 
 def alleles_unique_in_study(AFtab, datasetID="population"):
