@@ -3,6 +3,7 @@
 Tests dropping incomplete studies, merging different resolution
 alleles, and combing allele frequency estimates.
 """
+
 import pytest
 import HLAfreq
 from HLAfreq import HLAfreq_pymc as HLAhdi
