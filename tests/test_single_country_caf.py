@@ -3,7 +3,6 @@
 Tests dropping incomplete studies, merging different resolution
 alleles, and combing allele frequency estimates.
 """
-
 import pytest
 import HLAfreq
 from HLAfreq import HLAfreq_pymc as HLAhdi
@@ -66,3 +65,7 @@ caf = HLAfreq.combineAF(aftab)
 def test_combined_allele_freq():
     assert all(caf.allele_freq == dirichlet([8, 12, 13]).mean())
 
+
+def test_hdi():
+    hdi = HLAhdi.AFhdi(aftab, credible_interval=0.95)
+    all(hdi.columns == ["lo", "hi", "allele", "post_mean"])

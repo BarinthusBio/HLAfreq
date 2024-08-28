@@ -5,5 +5,4 @@ writeup/
 envs/.venv
 build/
 dist/
-src/*.egg-info/
 .coverage

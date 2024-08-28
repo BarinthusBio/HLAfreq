@@ -7,3 +7,4 @@ Several detailed `HLAfreq` examples are detailed in `examples/`.
 - [Using priors](https://BarinthusBio.github.io/HLAfreq/HLAfreq/examples/working_with_priors.html)
 - [Credible intervals](https://BarinthusBio.github.io/HLAfreq/HLAfreq/examples/credible_intervals.html)
 """
+

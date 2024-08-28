@@ -8,7 +8,6 @@ estimate HLA frequencies of countries or other regions such as
 global HLA frequencies.
 """
 
-from collections.abc import Iterable
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
@@ -17,33 +16,6 @@ import matplotlib.pyplot as plt
 import math
 import scipy as sp
 import matplotlib.colors as mcolors
-
-
-def simulate_population(alleles: Iterable[str], locus: str, population: str):
-    pop_size = np.random.randint(len(alleles), 50)
-    samples = np.random.choice(alleles, pop_size, replace=True)
-    counts = pd.Series(samples).value_counts()
-    counts.values / pop_size
-    pop = pd.DataFrame(
-        {
-            "allele": counts.index,
-            "loci": locus,
-            "population": population,
-            "allele_freq": counts.values / pop_size,
-            "sample_size": pop_size,
-        }
-    )
-    return pop
-
-
-def simulate_study(alleles, populations, locus):
-    study = []
-    for i in range(populations):
-        pop = simulate_population(alleles=alleles, locus=locus, population=f"pop_{i}")
-        study.append(pop)
-
-    study = pd.concat(study)
-    return study
 
 
 def makeURL(
@@ -192,9 +164,7 @@ def Npages(bs):
     # Get the table with number of pages
     navtab = bs.find("div", {"id": "divGenNavig"}).find("table", {"class": "table10"})
     if not navtab:
-        raise AssertionError(
-            "navtab does not evaluate to True. Check URL returns results in web browser."
-        )
+        raise AssertionError("navtab does not evaluate to True. Check URL returns results in web browser.")
     # Get cell with ' of ' in
     pagesOfN = [
         td.get_text(strip=True) for td in navtab.find_all("td") if " of " in td.text
@@ -254,9 +224,7 @@ def getAFdata(base_url, timeout=20, format=True, ignoreG=True):
     try:
         bs = BeautifulSoup(requests.get(base_url, timeout=timeout).text, "html.parser")
     except requests.exceptions.ReadTimeout as e:
-        raise Exception(
-            "Requests timeout, try a larger `timeout` value for `getAFdata()`"
-        ) from e
+        raise Exception("Requests timeout, try a larger `timeout` value for `getAFdata()`") from e
     # How many pages of results
     N = Npages(bs)
     print("%s pages of results" % N)
@@ -269,9 +237,7 @@ def getAFdata(base_url, timeout=20, format=True, ignoreG=True):
         try:
             bs = BeautifulSoup(requests.get(url, timeout=timeout).text, "html.parser")
         except requests.exceptions.ReadTimeout as e:
-            raise Exception(
-                "Requests timeout, try a larger `timeout` value for `getAFdata()`"
-            ) from e
+            raise Exception("Requests timeout, try a larger `timeout` value for `getAFdata()`") from e
         tab = parseAF(bs)
         tabs.append(tab)
     print("Download complete")
@@ -401,13 +367,9 @@ def collapse_reduced_alleles(AFtab, datasetID="population"):
     ).reset_index()
     # Within a study each all identical alleles should have the same loci and sample size
     if not all(collapsed["#loci"] == 1):
-        raise AssertionError(
-            "Multiple loci found for a single allele in a single population"
-        )
+        raise AssertionError("Multiple loci found for a single allele in a single population")
     if not all(collapsed["#sample_sizes"] == 1):
-        raise AssertionError(
-            "Multiple sample_sizes found for a single allele in a single population"
-        )
+        raise AssertionError("Multiple sample_sizes found for a single allele in a single population")
     collapsed = collapsed[
         ["allele", "loci", "population", "allele_freq", "sample_size"]
     ]
@@ -439,9 +401,7 @@ def unmeasured_alleles(AFtab, datasetID="population"):
             # What was the sample size for this data?
             dataset_sample_size = datasetAF.sample_size.unique()
             if not (len(dataset_sample_size) == 1):
-                raise AssertionError(
-                    "dataset_sample_size must be 1, not %s" % len(dataset_sample_size)
-                )
+                raise AssertionError("dataset_sample_size must be 1, not %s" % len(dataset_sample_size))
             dataset_sample_size = dataset_sample_size[0]
             # Get all alleles for this locus (across datasets)
             ualleles = df[df.loci == locus].allele.unique()
@@ -529,14 +489,10 @@ def combineAF(
             raise AssertionError("The same allele appears multiple times in a dataset")
     if complete:
         if not incomplete_studies(df, datasetID=datasetID).empty:
-            raise AssertionError(
-                "AFtab contains studies with AF that doesn't sum to 1. Check incomplete_studies(AFtab)"
-            )
+            raise AssertionError("AFtab contains studies with AF that doesn't sum to 1. Checkincomplete_studies(AFtab)")
     if resolution:
         if not check_resolution(df):
-            raise AssertionError(
-                "AFtab conains alleles at multiple resolutions, check check_resolution(AFtab)"
-            )
+            raise AssertionError("AFtab conains alleles at multiple resolutions, check check_resolution(AFtab)")
     if format:
         df = formatAF(df, ignoreG)
     if add_unmeasured:
@@ -593,7 +549,7 @@ def single_loci(AFtab):
         AFtab (pd.DataFrame): Allele frequency data
     """
     if not len(AFtab.loci.unique()) == 1:
-        raise AssertionError("'AFtab' must contain only 1 loci")
+        raise AssertionError("'AFtab' must conatain only 1 loci")
 
 
 def alleles_unique_in_study(AFtab, datasetID="population"):
@@ -632,9 +588,7 @@ def id_duplicated_allele(grouped):
     """Reports the allele that has mupltiple sample sizes"""
     duplicated_population = grouped.population.apply(lambda x: any(x.duplicated()))
     if not all(~duplicated_population):
-        raise AssertionError(
-            f"duplicated population within allele {duplicated_population[duplicated_population].index.tolist()}"
-        )
+        raise AssertionError(f"duplicated population within allele {duplicated_population[duplicated_population].index.tolist()}")
 
 
 def population_coverage(p):
