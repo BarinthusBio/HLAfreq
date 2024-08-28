@@ -8,6 +8,7 @@ estimate HLA frequencies of countries or other regions such as
 global HLA frequencies.
 """
 
+from collections.abc import Iterable
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
@@ -16,6 +17,33 @@ import matplotlib.pyplot as plt
 import math
 import scipy as sp
 import matplotlib.colors as mcolors
+
+
+def simulate_population(alleles: Iterable[str], locus: str, population: str):
+    pop_size = np.random.randint(len(alleles), 50)
+    samples = np.random.choice(alleles, pop_size, replace=True)
+    counts = pd.Series(samples).value_counts()
+    counts.values / pop_size
+    pop = pd.DataFrame(
+        {
+            "allele": counts.index,
+            "loci": locus,
+            "population": population,
+            "allele_freq": counts.values / pop_size,
+            "sample_size": pop_size,
+        }
+    )
+    return pop
+
+
+def simulate_study(alleles, populations, locus):
+    study = []
+    for i in range(populations):
+        pop = simulate_population(alleles=alleles, locus=locus, population=f"pop_{i}")
+        study.append(pop)
+
+    study = pd.concat(study)
+    return study
 
 
 def makeURL(

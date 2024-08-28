@@ -19,33 +19,6 @@ def test_url_string(base_url):
     assert isinstance(base_url, str)
 
 
-def simulate_population(alleles: Iterable[str], locus: str, population: str):
-    pop_size = np.random.randint(len(alleles), 50)
-    samples = np.random.choice(alleles, pop_size, replace=True)
-    counts = pd.Series(samples).value_counts()
-    counts.values / pop_size
-    pop = pd.DataFrame(
-        {
-            "allele": counts.index,
-            "loci": locus,
-            "population": population,
-            "allele_freq": counts.values / pop_size,
-            "sample_size": pop_size,
-        }
-    )
-    return pop
-
-
-def simulate_study(alleles, populations, locus):
-    study = []
-    for i in range(populations):
-        pop = simulate_population(alleles=alleles, locus=locus, population=f"pop_{i}")
-        study.append(pop)
-
-    study = pd.concat(study)
-    return study
-
-
 @pytest.fixture(
     params=[
         ["A*01:01", "A*01:02", "A*01:03"],
@@ -60,7 +33,7 @@ def alleles(request):
 
 @pytest.fixture
 def aftab(alleles):
-    return simulate_study(alleles, 3, "X")
+    return HLAfreq.simulate_study(alleles, 3, "X")
 
 
 @pytest.fixture
