@@ -66,8 +66,3 @@ caf = HLAfreq.combineAF(aftab)
 def test_combined_allele_freq():
     assert all(caf.allele_freq == dirichlet([8, 12, 13]).mean())
 
-
-# Not a meaningful test but slow
-# def test_hdi():
-#     hdi = HLAhdi.AFhdi(aftab, credible_interval=0.95)
-#     assert all(hdi.columns == ["lo", "hi", "allele", "post_mean"])

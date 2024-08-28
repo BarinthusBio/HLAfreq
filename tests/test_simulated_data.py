@@ -61,7 +61,7 @@ def test_combineAF(aftab, expected_freq):
     assert caf.allele_freq.values == pytest.approx(expected_freq, rel=5e-2)
 
 
-def test_resolution_check(alleles, aftab):
+def test_resolution_check(aftab):
     aftab.loc[0, "allele"] = aftab.loc[0, "allele"] + ":00:00"
     with pytest.raises(AssertionError) as e:
         caf = HLAfreq.combineAF(aftab)
