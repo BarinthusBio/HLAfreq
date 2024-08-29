@@ -5,6 +5,7 @@ setup(
     version="0.0.3.dev2",
     url="https://github.com/BarinthusBio/HLAfreq",
     project_urls={
+        'Documentaion': "https://barinthusbio.github.io/HLAfreq/HLAfreq.html",
         'Tracker': "https://github.com/BarinthusBio/HLAfreq/issues"
     },
     author="David Wells",
