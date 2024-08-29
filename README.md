@@ -10,7 +10,7 @@ ability to mount an immune response to specific epitopes.
 Automated download of allele frequency data download from 
 [allele frequencies.net](http://www.allelefrequencies.net/).
 
-Source code is available at [BarinthusBio/HLAfreq](https://github.com/BarinthusBio/HLAfreq).
+Full documentation at [HLAfreq/docs](https://BarinthusBio.github.io/HLAfreq/HLAfreq.html). Source code is available at [BarinthusBio/HLAfreq](https://github.com/BarinthusBio/HLAfreq).
 
 ## Details
 Estimates are combined by modelling allele frequency as a 
@@ -107,8 +107,6 @@ API documentation for functions are under the submodules on the left.
 - `HLAfreq.HLAfreq` documents most functions, specifically download and combine
 allele data.
 - `HLAfreq.HLAfreq_pymc` is functions using pymc to acurately estimate credible intervals on allele frequency estimates.
-- `HLAfreq.HLAfreq_data` contains data loaders to get countries available on
-allelefrequencies.net.
 
 For help on specific functions view the docstring, `help(function_name)`.
 
