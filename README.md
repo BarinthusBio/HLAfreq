@@ -8,7 +8,7 @@ and, when paired with epitope prediction, estimating a population's
 ability to mount an immune response to specific epitopes.
 
 Automated download of allele frequency data download from 
-[allele frequencies.net](http://www.allelefrequencies.net/).
+[allelefrequencies.net](http://www.allelefrequencies.net/).
 
 Full documentation at [HLAfreq/docs](https://BarinthusBio.github.io/HLAfreq/HLAfreq.html). Source code is available at [BarinthusBio/HLAfreq](https://github.com/BarinthusBio/HLAfreq).
 
@@ -29,12 +29,40 @@ supertypes (grouped alleles sharing binding specificies).
 `HLAfreq` is a `python` package available on windows, mac, and linux. We recommend installing
 with `conda`.
 ```
-conda create -n hlafreq -c bioconda -c conda-forge hlafreq
+conda create -n hlafreq -c conda-forge -c bioconda hlafreq
 conda activate hlafreq
 ```
+
+### Troubleshooting
+`HLAfreq` uses `pymc` to estimate credible intervals,
+which is the source of most installation difficulty, see
+[pymc installation guide](https://www.pymc.io/projects/docs/en/stable/installation.html) and [tips and tricks](https://conda-forge.org/docs/user/tipsandtricks/#using-multiple-channels).
+
+You may see an error about g++ and degraded performance:
+```
+WARNING (pytensor.configdefaults): g++ not detected!  PyTensor will be unable to compile C-implementations and will default to Python. Performance may be severely degraded. To remove this warning, set PyTensor flags cxx to an empty string.
+```
+
+This means that one of the pymc backends is missing and estimating confidence
+intervals will be very slow. But don't worry, try one of these fixes below:
+
+- Set the channel priority to strict, then install as above (using conda-forge then bioconda channels).
+```
+conda config --set channel_priority strict
+```
+
+- Install a conda compiler to handle g++ based on your os.
+```
+conda create -n hlafreq -c conda-forge -c bioconda hlafreq cxx-compiler
+```
+
+If you do run into trouble please open an [issue](https://github.com/BarinthusBio/HLAfreq/issues).
+
+### conda
 If you're new to conda see the miniconda [installation guide](https://conda.io/projects/conda/en/stable/user-guide/install/index.html) and [documentation](https://docs.conda.io/projects/conda/en/stable/user-guide/index.html)
 to get started with `conda`.
-Enter the above command into your conda prompt to create and
+
+Enter the install command from above into your conda prompt to create and
 activate a conda environment with `HLAfreq` installed.
 Typing `python` into this activated environment will start
 a python session where you can enter your python code such as
@@ -44,25 +72,7 @@ If you prefer to write your python code as scripts using an IDE such as
 PyCharm or VScode, you'll need to look up how to configure a conda
 virtual environment with those tools.
 
-### Troubleshooting
-`HLAfreq` uses `pymc` to estimate credible intervals,
-which is the source of most installation difficulty, see
-[pymc installation guide](https://www.pymc.io/projects/docs/en/stable/installation.html).
-
-At time of writing `pymc` doesn't play nice with python 3.11, so
-you can try installing a specific `python` version
-and then add `HLAfreq` with pip or conda.
-For example
-```
-conda create -n hlafreq -c conda-forge -c bioconda python=3.10 numpy=1.25.2 pymc=5.6.1 hlafreq
-```
-
-`HLAfreq` requires `python>=3.8`, `matplotlib>=3.5`, and `pymc>=3`.
-Conda should handle this automatically, but if you get errors check
-the package versions with `conda list`.
-
-If you do run into trouble please open an [issue](https://github.com/BarinthusBio/HLAfreq/issues).
-
+### pip
 If you don't intend to use credible intervals you can install
 with pip: `pip install HLAfreq`.
 However, if you do import `HLAfreq_pymc` you may get warnings
@@ -75,7 +85,7 @@ try installing with conda as described above.
 ## Minimal example
 Download HLA data using `HLAfreq.HLAfreq.makeURL()` and `HLAfreq.HLAfreq.getAFdata()`.
 All arguments that can be specified in the webpage form are available,
-see `help(HLAfreq.makeURL)` for details (press `q` to exit).
+see the [`makeURL()` docs](https://barinthusbio.github.io/HLAfreq/HLAfreq/HLAfreq.html#makeURL) for details.
 ```
 import HLAfreq
 base_url = HLAfreq.makeURL("Uganda", locus="A")
@@ -86,7 +96,7 @@ After downloading the data, it must be filtered so that all studies
 sum to allele frequency 1 (within tolerence). Then we must ensure
 that all studies report alleles at the same resolution.
 Finaly we can combine frequency estimates, for more details see
-the `HLAfreq.HLAfreq.combineAF()` api documentation.
+the [`combineAF()` api documentation](https://barinthusbio.github.io/HLAfreq/HLAfreq/HLAfreq.html#combineAF).
 ```
 aftab = HLAfreq.only_complete(aftab)
 aftab = HLAfreq.decrease_resolution(aftab, 2)
