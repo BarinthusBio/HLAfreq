@@ -103,6 +103,9 @@ aftab = HLAfreq.decrease_resolution(aftab, 2)
 caf = HLAfreq.combineAF(aftab)
 ```
 
+To add confidence intervals to estimates see
+[`examples/quickstart.py`](https://github.com/BarinthusBio/HLAfreq/blob/main/examples/quickstart.py).
+
 ## Detailed examples
 For more detailed walkthroughs see [HLAfreq/examples](https://barinthusbio.github.io/HLAfreq/HLAfreq/examples.html).
 
