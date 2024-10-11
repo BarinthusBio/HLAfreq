@@ -56,6 +56,12 @@ conda config --set channel_priority strict
 conda create -n hlafreq -c conda-forge -c bioconda hlafreq cxx-compiler
 ```
 
+When running entire scripts on windows, you may see an error about
+"Safe importing of main module", multiprocessing, and starting
+new processes. To fix this, main guard your code with
+`if __name__ == "__main__":` after the `import`s as demonstrated in
+[`examples/quickstart.py`](https://github.com/BarinthusBio/HLAfreq/blob/main/examples/quickstart.py).
+
 If you do run into trouble please open an [issue](https://github.com/BarinthusBio/HLAfreq/issues).
 
 ### conda
