@@ -256,7 +256,7 @@ def getAFdata(base_url, timeout=20, format=True, ignoreG=True):
     except requests.exceptions.ReadTimeout as e:
         raise Exception(
             "Requests timeout, try a larger `timeout` value for `getAFdata()`"
-        ) from e
+        ) from None
     # How many pages of results
     N = Npages(bs)
     print("%s pages of results" % N)
@@ -271,7 +271,7 @@ def getAFdata(base_url, timeout=20, format=True, ignoreG=True):
         except requests.exceptions.ReadTimeout as e:
             raise Exception(
                 "Requests timeout, try a larger `timeout` value for `getAFdata()`"
-            ) from e
+            ) from None
         tab = parseAF(bs)
         tabs.append(tab)
     print("Download complete")

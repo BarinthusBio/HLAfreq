@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     # Get HLA frequency data
     base_url = HLAfreq.makeURL("Uganda", locus="A")
-    aftab = HLAfreq.getAFdata(base_url)
+    aftab = HLAfreq.getAFdata(base_url, timeout=120)
 
     # Preprocess data, checks etc
     aftab = HLAfreq.only_complete(aftab)
