@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="HLAfreq",
-    version="0.0.4",
+    version="0.0.5",
     url="https://github.com/BarinthusBio/HLAfreq",
     project_urls={
         'Documentaion': "https://barinthusbio.github.io/HLAfreq/HLAfreq.html",
