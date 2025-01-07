@@ -311,8 +311,9 @@ def incomplete_studies(AFtab, llimit=0.95, ulimit=1.1, datasetID="population"):
 def only_complete(AFtab, llimit=0.95, ulimit=1.1, datasetID="population"):
     """Returns only complete studies.
 
-    Studies are only dropped if their population and loci are in noncomplete together.
-    This prevents throwing away data if another loci in the population is incomplete
+    Data is dropped if the locus for that population is not complete, i.e. doesn't
+    sum to between `llimit` and `ulimit`. This prevents throwing away data if
+    another loci in the population is incomplete.
 
     Args:
         AFtab (pd.DataFrame): Dataframe containing multiple studies
