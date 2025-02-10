@@ -1,6 +1,6 @@
 """
 Download HLA data for all countries and calculate
-population coverage of IEDB set of 27 alleles.
+population coverage of HLA-A IEDB set of 27 alleles.
 
 Plot population coverage in detail for Indonesia.
 
@@ -52,10 +52,11 @@ for locus in ['A', 'B']:
 
 iedb_cov = []
 iedb_country = []
-# Load and combine within country data for HLA-A and HLA-B separately
+# Load and combine within country data for HLA-A
 # Calculate the proportion of each population with no alleles
-# in the IEDB reference set, assuming no linkage disequilibrium
-# between HLA-A and HLA-B
+# in the IEDB reference set
+# We focus on HLA-A only, because we cannot accurately combine HLA-A and HLA-B data
+# without an estimate of linkage disequilibrium which is usually high between HLA loci
 for country in countries:
     try:
         afa = pd.read_csv(f"data/example/population_coverage/{country}_A_raw.csv")
@@ -64,15 +65,11 @@ for country in countries:
         cafa = HLAfreq.combineAF(afa)
         maska = cafa.allele.isin(iedb_ref)
         p = cafa[maska].allele_freq.sum()
-        afb = pd.read_csv(f"data/example/population_coverage/{country}_B_raw.csv")
-        afb = HLAfreq.only_complete(afb)
-        afb = HLAfreq.decrease_resolution(afb, 2)
-        cafb = HLAfreq.combineAF(afb)
-        maskb = cafb.allele.isin(iedb_ref)
-        m = cafb[maskb].allele_freq.sum()
         # Population proportion with no IEDB ref alleles
-        # at HLA A or HLA B
-        coverage = 1 - ((1-p)**2 * (1-m)**2)
+        # at HLA A only
+        q = 1-p
+        coverage = 1 - q**2
+        assert coverage == (p**2) + (2*p*q), f"Inconsistent coverage calculation: {country}"
         iedb_cov.append(coverage)
         iedb_country.append(country)
     except:
@@ -83,8 +80,7 @@ df = df.sort_values('coverage')
 df = pd.merge(df, regions, how="left", left_on="country", right_on="Country")
 
 # Plot the proportion of each population with no alleles
-# in the IEDB reference set, assuming no linkage disequilibrium
-# between HLA-A and HLA-B
+# in the IEDB reference set, for HLA-A only
 plt.barh(df.country, df.coverage, color="black")
 regions = df.largeRegion.unique()
 regions.sort()
@@ -92,17 +88,19 @@ for region in regions:
     mask = df.largeRegion == region
     plt.barh(df[mask].country, df[mask].coverage, label=region, zorder=3)
 
-plt.axvline(0.97, linestyle="--", c="black", zorder=5)
+plt.axvline(
+    df.coverage.mean(),
+    linestyle="--", c="black", zorder=5)
 plt.tight_layout()
 plt.legend(loc="upper left")
 plt.grid(zorder=0)
 plt.show()
 
 ##############
-# Plot cumulative frequency of IEDB panel
+# Plot cumulative frequency of HLA-A in IEDB panel
 # vs
 # country specific alleles
-#A
+# A
 country = "Indonesia"
 afa = pd.read_csv(f"data/example/population_coverage/{country}_A_raw.csv")
 afa = HLAfreq.only_complete(afa)
