@@ -13,7 +13,7 @@ authors:
       affiliation: '1'
     - name: Michael McAuley
       orcid: 0000-0003-2486-931X
-      aaffiliation: '2'
+      affiliation: '2'
 affiliations:
     - name: Barinthus Biotherapeutics, United Kingdom
       index: 1
