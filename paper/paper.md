@@ -26,15 +26,15 @@ bibliography: paper.bib
 # Summary
 Human leukocyte antigen (HLA) genes encode cell-surface proteins which play an important role in immunity. Since different HLA alleles enable different immune responses, the population frequency of HLA alleles is often considered when designing vaccines [@gulukota1996hla]. Specific HLA alleles have been linked to autoimmune disease [@simmonds2007hla] and associated with adverse drug reactions [@fan2017hla]. Further, the success of solid organ and stem cell transplants is related to HLA matching between donor and recipient [@morishima2002clinical; @furst2019hla].
 
-The [Allele Frequency Net Database](www.allelefrequencies.net) is a publicly available repository for human immune gene frequency data from across the world [@Gonzalez-Galarza2020]. However, difficulties downloading and combining data from multiple studies make it hard for researchers to study larger regions or even single countries where the data is split across many sources. To address this gap, we present `HLAfreq`: a Python package which can be used to download, combine and analyse datasets from the Allele Frequency Net Database.
+We present `HLAfreq`: a Python package which can be used to download, combine and analyse multiple HLA allele frequency datasets.
 
 # Statement of need
-The Allele Frequency Net Database is an excellent resource; however, downloading data from a large number of studies is currently manual and slow. After downloading multiple studies, combining them is hindered by different allele resolutions, missing alleles, and incomplete studies. `HLAfreq` provides functions to identify incomplete studies, handle missing alleles, harmonise allele resolution, calculate population coverage, and estimate allele frequencies and uncertainty using a Bayesian framework. When combining studies, estimates are weighted by twice the sample size (because each individual is diploid). Alternatively, any supplied weighting can be used, see the [multi-country example](https://barinthusbio.github.io/HLAfreq/HLAfreq/examples/multi_country.html). Allele frequency plots can be generated to identify anomalous datasets and interesting diversity in a set of populations. To get started, see the guide and examples at [github.com/BarinthusBio/HLAfreq](https://github.com/BarinthusBio/HLAfreq).
+The [Allele Frequency Net Database](www.allelefrequencies.net) is a publicly available repository for human immune gene frequency data from across the world [@Gonzalez-Galarza2020]. However, downloading data from a large number of studies is currently manual and slow. After downloading multiple studies, combining them is hindered by different allele resolutions, missing alleles, and incomplete studies. `HLAfreq` provides functions to identify incomplete studies, handle missing alleles, harmonise allele resolution, calculate population coverage, and estimate allele frequencies and uncertainty using a Bayesian framework. Allele frequency plots can be generated to identify anomalous datasets and interesting diversity in a set of populations. To get started, see the guide and examples at [github.com/BarinthusBio/HLAfreq](https://github.com/BarinthusBio/HLAfreq).
 
 # Methods
 
 ## Statistical methods
-`HLAfreq` uses a Bayesian framework to estimate allele frequency statistics from combined datasets for a specific population. The user can select from two  statistical models. The simpler 'default model' gives point estimates for allele frequencies. The more sophisticated 'compound model' gives both point estimates and credible intervals.
+`HLAfreq` uses a Bayesian framework to estimate allele frequency statistics from combined datasets for a specific population. The user can select from two statistical models. The simpler 'default model' gives point estimates for allele frequencies. The more sophisticated 'compound model' gives both point estimates and credible intervals.
 
 ### Default model
 Let $p_k$ be the frequency of the $k$-th allele of a particular gene in a given population (e.g. a country). The default model assumes that the observations from all datasets for the population are drawn independently and that the probability of being the $k$-th allele is $p_k$. In other words, each observation is drawn from a categorical distribution with parameters $(p_1,\dots,p_K)$ where $K$ is the total number of alleles. The prior for $(p_1,\dots,p_K)$ is taken to be a Dirichlet distribution with parameters $\alpha_1,\dots,\alpha_K$. The Dirichlet distribution is a generalisation of the Beta distribution to higher dimensions; see Section 4.6.3 of [@murphy2022probabilistic].
@@ -46,7 +46,7 @@ $$
 
 By default, `HLAfreq` takes the prior parameters to be $\alpha_1=\dots=\alpha_K=1$. This results in a uniform prior on $(p_1,\dots,p_K)$ subject to the constraints that $p_1,\dots,p_K\geq 0$ and $p_1+\dots+p_K=1$. The user can specify alternative values for $\alpha_1,\dots,\alpha_K$. These parameters may be interpreted as a `pseudocount' in the sense that choosing the prior $\alpha_1,\dots,\alpha_K$ is equivalent to taking a uniform prior and then observing a dataset with $\alpha_k-1$ observations of the $k$-th allele. (Intuitively the uniform prior corresponds to one observation of each allele). This can be used as a heuristic for choosing prior parameters based on external information.
 
-`HLAfreq` does not provide credible intervals based on the default model because they are frequently unrealistically narrow. This is because the default model does not account for variance between studies. The compound model, described below, accounts for this variation and provides accurate credible intervals. The current model is chosen as the default because it is simpler and we expect its point estimates to be sufficient for the majority of use cases.
+`HLAfreq` does not provide credible intervals based on the default model because they are frequently unrealistically narrow. This is because the default model does not account for variance between studies. The compound model, described below, is more complex but accounts for this variation and provides accurate credible intervals.
 
 ### Compound model
 The default model assumes that all observations are sampled from a homogeneous population; however, observations within a single study are more likely to be similar e.g. they may be sampled at the same time or place. To account for this, `HLAfreq` provides a 'compound model' which accounts for the grouping of observations within studies and allows the allele frequencies of study populations to differ from each other. The additional uncertainty results in wider but more accurate credible intervals. This falls within the general class of hierarchical Bayesian models: see Chapter 5 [@gelman2014] for further details and background.
@@ -56,6 +56,19 @@ The compound model makes the following assumptions. As before, $p_k$ denotes the
 Idiosyncratic sampling biases are captured by the different values of $\beta^{(j)}$, which result in different probabilities of sampling particular alleles for each data source. If $\gamma$ is large, then $\beta^{(j)}$ is likely to concentrate around $(p_1,\dots,p_K)$ which means that different studies tend to have similar allele frequencies.
 
 The posterior distributions of $p_1,\dots,p_K$ and $\gamma$ do not have a closed form and so are estimated numerically using `PyMC` [@salvatier2016probabilistic]. The `HLAfreq` function `AFhdi` outputs posterior means and credible intervals for allele frequencies.
+
+# Research Impact Statement
+`HLAfreq` has been used in the design of several vaccines and immunotherapies by
+Barinthus Biotherapeutics.
+
+# Software Design
+`HLAfreq` was written in `python` rather than `R` to take advantage of `requests` and `bs4`
+for AFND's recommended "automated access". After downloading, the data are return  in `pandas`
+dataframes rather than a custom class for familiarity and in line with Scientific-Python recommendations.
+
+# AI usage disclosure
+No generative AI tools were used in the development of this software, the writing
+of this manuscript, or the preparation of supporting materials.
 
 # Acknowledgements
 MM was supported by the European Research Council (ERC) Advanced Grant QFPROBA (grant number 741487). DW is employed by Barinthus Biotherapeutics (UK) Ltd.
