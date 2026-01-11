@@ -29,7 +29,7 @@ supertypes (grouped alleles sharing binding specificies).
 `HLAfreq` is a `python` package available on windows, mac, and linux. We recommend installing
 with `conda`.
 ```
-conda create -n hlafreq -c conda-forge -c bioconda hlafreq
+conda create -n hlafreq bioconda::hlafreq
 conda activate hlafreq
 ```
 
