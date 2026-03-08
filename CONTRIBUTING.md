@@ -20,7 +20,7 @@ please open an [issue](https://github.com/BarinthusBio/HLAfreq/issues). Please i
 - what you expected/think should have happened instead
 
 ## Contribute to the software
-If you want to add to `epitope_aligner` that's great! Fork the
+If you want to add to `HLAfreq` that's great! Fork the
 repo and create a branch named after the change you're making.
 Make your contribution to the new branch on your fork and add
 tests to verify that your code runs as expected. The tests should
