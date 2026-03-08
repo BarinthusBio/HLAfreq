@@ -139,7 +139,7 @@ Thank you for using `HLAfreq`! Contributions in any form
 are immensely helpful: asking questions, answering issues,
 and pull requests are all great.
 
-For full details see [CONTRIBUTING.md](https://github.com/BarinthusBio/HLAfreq/blob/main/examples/quickstart.py). In short, if the answer to
+For full details see [CONTRIBUTING.md](https://github.com/BarinthusBio/HLAfreq/blob/main/CONTRIBUTING.md). In short, if the answer to
 your question is not in the docs, open an [issue](https://github.com/BarinthusBio/HLAfreq/issues). If you'd like to improve `HLAfreq` create a fork and a pull request.
 
 <!-- ## Developer notes
