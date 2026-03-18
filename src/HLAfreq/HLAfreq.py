@@ -226,9 +226,9 @@ def formatAF(AFtab, ignoreG=True):
         pd.DataFrame: The formatted allele frequency data.
     """
     df = AFtab.copy()
-    if df.sample_size.dtype == "O":
+    if pd.api.types.is_string_dtype(df.sample_size.dtype):
         df.sample_size = pd.to_numeric(df.sample_size.str.replace(",", ""))
-    if df.allele_freq.dtype == "O":
+    if pd.api.types.is_string_dtype(df.allele_freq.dtype):
         if ignoreG:
             df.allele_freq = df.allele_freq.str.replace("(*)", "", regex=False)
         df.allele_freq = pd.to_numeric(df.allele_freq)
