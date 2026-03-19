@@ -8,7 +8,7 @@ and, when paired with epitope prediction, estimating a population's
 ability to mount an immune response to specific epitopes.
 
 Automated download of allele frequency data download from 
-[allelefrequencies.net](http://www.allelefrequencies.net/).
+[allelefrequencies.net](https://www.allelefrequencies.net/).
 
 Full documentation at [HLAfreq/docs](https://BarinthusBio.github.io/HLAfreq/HLAfreq.html). Source code is available at [BarinthusBio/HLAfreq](https://github.com/BarinthusBio/HLAfreq).
 

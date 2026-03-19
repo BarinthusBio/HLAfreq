@@ -26,7 +26,7 @@ except FileExistsError:
     pass
 
 # Download countries in regions as defined on 
-# http://www.allelefrequencies.net/datasets.asp#tag_4
+# https://www.allelefrequencies.net/datasets.asp#tag_4
 r = requests.get("https://raw.githubusercontent.com/BarinthusBio/HLAfreq/main/data/example/countries.csv")
 with open("data/example/countries.csv", "w") as f:
     f.write(r.text)
