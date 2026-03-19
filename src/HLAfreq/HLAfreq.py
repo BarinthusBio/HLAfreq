@@ -63,7 +63,7 @@ def makeURL(
 ):
     """Create URL for search of allele frequency net database.
 
-    All arguments are documented [here](http://www.allelefrequencies.net/extaccess.asp)
+    All arguments are documented [here](https://www.allelefrequencies.net/extaccess.asp)
 
     Args:
         country (str, optional): Country name to retrieve records from. Defaults to "".
@@ -78,10 +78,10 @@ def makeURL(
             created using `resolution` and `resolution_pattern`. Defaults to 2.
         region (str, optional): Filter to geographic region. {Asia, Australia,
             Eastern Europe, ...}.
-            All regions listed [here](http://www.allelefrequencies.net/pop6003a.asp).
+            All regions listed [here](https://www.allelefrequencies.net/pop6003a.asp).
             Defaults to "".
         ethnic (str, optional): Filter to ethnicity. {"Amerindian", "Black", "Caucasian", ...}.
-            All ethnicities listed [here](http://www.allelefrequencies.net/pop6003a.asp).
+            All ethnicities listed [here](https://www.allelefrequencies.net/pop6003a.asp).
             Defaults to "".
         study_type (str, optional): Type of study. {"Anthropology", "Blood+Donor",
             "Bone+Marrow+Registry", "Controls+for+Disease+Study", "Disease+Study+Patients",
@@ -104,7 +104,7 @@ def makeURL(
     Returns:
         str: URL to search allelefrequencies.net
     """
-    base = "http://www.allelefrequencies.net/hla6006a.asp?"
+    base = "https://www.allelefrequencies.net/hla6006a.asp?"
     locus_type = "hla_locus_type=Classical&"
     hla_locus = "hla_locus=%s&" % (locus)
     country = "hla_country=%s&" % (country)
@@ -220,15 +220,15 @@ def formatAF(AFtab, ignoreG=True):
         AFtab (pd.DataFrame): Allele frequency data downloaded from allelefrequency.net
             using `getAFdata()`.
         ignoreG (bool, optional): Treat G group alleles as normal.
-            See http://hla.alleles.org/alleles/g_groups.html for details. Defaults to True.
+            See https://hla.alleles.org/alleles/g_groups.html for details. Defaults to True.
 
     Returns:
         pd.DataFrame: The formatted allele frequency data.
     """
     df = AFtab.copy()
-    if df.sample_size.dtype == "O":
+    if pd.api.types.is_string_dtype(df.sample_size.dtype):
         df.sample_size = pd.to_numeric(df.sample_size.str.replace(",", ""))
-    if df.allele_freq.dtype == "O":
+    if pd.api.types.is_string_dtype(df.allele_freq.dtype):
         if ignoreG:
             df.allele_freq = df.allele_freq.str.replace("(*)", "", regex=False)
         df.allele_freq = pd.to_numeric(df.allele_freq)
@@ -245,7 +245,7 @@ def getAFdata(base_url, timeout=20, format=True, ignoreG=True):
         timeout (int): How long to wait to receive a response.
         format (bool): Format the downloaded data using `formatAF()`.
         ignoreG (bool): treat allele G groups as normal.
-            See http://hla.alleles.org/alleles/g_groups.html for details. Default = True
+            See https://hla.alleles.org/alleles/g_groups.html for details. Default = True
 
     Returns:
         pd.DataFrame: allele frequency data parsed into a pandas dataframe
@@ -393,7 +393,8 @@ def collapse_reduced_alleles(AFtab, datasetID="population"):
             row.loci.unique()[0],
             len(row.loci.unique()),
             len(row.sample_size.unique()),
-        ]
+        ],
+        include_groups=False
     )
     collapsed = pd.DataFrame(
         collapsed.tolist(),
@@ -555,7 +556,8 @@ def combineAF(
             np.average(row.allele_freq, weights=row[weights]),
             row.c.sum(),
             row.sample_size.sum(),
-        ]
+        ],
+        include_groups=False
     )
     combined = pd.DataFrame(
         combined.tolist(), columns=["allele", "loci", "wav", "c", "sample_size"]
