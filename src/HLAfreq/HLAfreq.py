@@ -393,7 +393,8 @@ def collapse_reduced_alleles(AFtab, datasetID="population"):
             row.loci.unique()[0],
             len(row.loci.unique()),
             len(row.sample_size.unique()),
-        ]
+        ],
+        include_groups=False
     )
     collapsed = pd.DataFrame(
         collapsed.tolist(),
@@ -555,7 +556,8 @@ def combineAF(
             np.average(row.allele_freq, weights=row[weights]),
             row.c.sum(),
             row.sample_size.sum(),
-        ]
+        ],
+        include_groups=False
     )
     combined = pd.DataFrame(
         combined.tolist(), columns=["allele", "loci", "wav", "c", "sample_size"]
