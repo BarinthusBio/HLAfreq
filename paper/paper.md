@@ -59,7 +59,8 @@ The posterior distributions of $p_1,\dots,p_K$ and $\gamma$ do not have a closed
 
 # Research Impact Statement
 `HLAfreq` has been used in the design of several vaccines and immunotherapies by
-Barinthus Biotherapeutics.
+Barinthus Biotherapeutics and also to discover cancer T cell targets in @testa2025scan.
+`HLAfreq` has also been used to study infectious disease [@li2025super] and autoimmune disease [@niederlova2025imbalance].
 
 # Software Design
 `HLAfreq` was written in `python` rather than `R` to take advantage of `requests` and `bs4`
