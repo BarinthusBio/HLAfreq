@@ -70,6 +70,9 @@ dataframes rather than a custom class for familiarity and in line with Scientifi
 No generative AI tools were used in the development of this software, the writing
 of this manuscript, or the preparation of supporting materials.
 
+# Contribution and authorship
+DW is the primary author, contributing to the project design, programming and writing of the manuscript. MM contributed to the statistical modelling and writing of the manuscript.
+
 # Acknowledgements
 MM was supported by the European Research Council (ERC) Advanced Grant QFPROBA (grant number 741487). DW is employed by Barinthus Biotherapeutics (UK) Ltd.
 
