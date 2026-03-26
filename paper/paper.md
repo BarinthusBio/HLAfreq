@@ -67,6 +67,12 @@ Barinthus Biotherapeutics and also to discover cancer T cell targets in @testa20
 for AFND's recommended "automated access". After downloading, the data are return  in `pandas`
 dataframes rather than a custom class for familiarity and in line with Scientific-Python recommendations.
 
+# State of the field
+There is currently a lack of other tools to download and combine HLA frequency data from the [Allele Frequency Net Database](www.allelefrequencies.net).
+Allele Frequency Net Database's automated access provides data as an html table rather than an easily manipulated data format.
+[slowkow/allelefrequencies](https://github.com/slowkow/allelefrequencies) provides a static data dump from 2023 and a python script to download the full database. 
+Neither of these options include any utilities for error checking or combining datasets.
+
 # AI usage disclosure
 No generative AI tools were used in the development of this software, the writing
 of this manuscript, or the preparation of supporting materials.
