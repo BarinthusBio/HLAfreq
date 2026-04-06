@@ -33,6 +33,7 @@ def test_correct_c_array(aftab):
     aftab = HLAfreq.decrease_resolution(aftab, 2)
     aftab['c'] = 2 * aftab.allele_freq * aftab.sample_size
     c_pivot = aftab.pivot(columns="allele", index="population", values="c")
+    c_pivot = c_pivot.fillna(0)
     c_array = HLAhdi._make_c_array(aftab)
     assert pytest.approx(c_array[0]) == c_pivot
 
