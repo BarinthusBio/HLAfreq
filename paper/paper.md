@@ -66,7 +66,7 @@ Barinthus Biotherapeutics and also to discover cancer T cell targets in @testa20
 
 # Software Design
 `HLAfreq` was written in `python` rather than `R` to take advantage of `requests` and `bs4`
-for AFND's recommended "automated access". After downloading, the data are return  in `pandas`
+for AFND's recommended "automated access". After downloading, the data are returned in `pandas`
 dataframes rather than a custom class for familiarity and in line with Scientific-Python recommendations.
 
 # State of the field
