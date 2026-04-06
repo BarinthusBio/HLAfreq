@@ -9,4 +9,5 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
-    cooldown: "14 days"
+    cooldown:
+      default-days: 14
