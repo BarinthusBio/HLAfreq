@@ -26,7 +26,7 @@ bibliography: paper.bib
 # Summary
 Human leukocyte antigen (HLA) genes encode cell-surface proteins which play an important role in immunity. Since different HLA alleles enable different immune responses, the population frequency of HLA alleles is often considered when designing vaccines [@gulukota1996hla]. Specific HLA alleles have been linked to autoimmune disease [@simmonds2007hla] and associated with adverse drug reactions [@fan2017hla]. Further, the success of solid organ and stem cell transplants is related to HLA matching between donor and recipient [@morishima2002clinical; @furst2019hla].
 
-We present `HLAfreq`: a Python package which can be used to download, combine and analyse multiple HLA allele frequency datasets.
+We present `HLAfreq`, a Python package which can be used to download, combine and analyse multiple HLA allele frequency datasets.
 
 # Statement of need
 The [Allele Frequency Net Database](www.allelefrequencies.net) is a publicly available repository for human immune gene frequency data from across the world [@Gonzalez-Galarza2020]. However, downloading data from a large number of studies is currently manual and slow. After downloading multiple studies, combining them is hindered by different allele resolutions, missing alleles, and incomplete studies. `HLAfreq` provides functions to identify incomplete studies, handle missing alleles, harmonise allele resolution, calculate population coverage, and estimate allele frequencies and uncertainty using a Bayesian framework. Allele frequency plots can be generated to identify anomalous datasets and interesting diversity in a set of populations. 
