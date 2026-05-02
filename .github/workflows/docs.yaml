@@ -32,7 +32,7 @@ jobs:
       # - run: python docs/make.py
       - run: pdoc -d google -o docs/ HLAfreq
       - run: jupyter nbconvert --to html --output-dir docs/HLAfreq/examples examples/*.ipynb
-      - uses: actions/upload-pages-artifact@v4
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: docs/
 
