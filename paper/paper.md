@@ -30,7 +30,7 @@ We present `HLAfreq`, a Python package which can be used to download, combine an
 
 # Statement of need
 The [Allele Frequency Net Database](www.allelefrequencies.net) is a publicly available repository for human immune gene frequency data from across the world [@Gonzalez-Galarza2020]. However, downloading data from a large number of studies is currently manual and slow. After downloading multiple studies, combining them is hindered by different allele resolutions, missing alleles, and incomplete studies. `HLAfreq` provides functions to identify incomplete studies, handle missing alleles, harmonise allele resolution, calculate population coverage, and estimate allele frequencies and uncertainty using a Bayesian framework. Allele frequency plots can be generated to identify anomalous datasets and interesting diversity in a set of populations. 
-The target audience is researchers interested HLA frequencies, especially in populations not well covered by a single study, e.g. across multiple countries.
+The target audience is researchers interested in HLA frequencies, especially in populations not well covered by a single study, e.g. across multiple countries.
 To get started, see the guide and examples at [github.com/BarinthusBio/HLAfreq](https://github.com/BarinthusBio/HLAfreq).
 
 # Methods
@@ -65,7 +65,7 @@ Barinthus Biotherapeutics and also to discover cancer T cell targets in @testa20
 `HLAfreq` has also been used to study infectious disease [@li2025super] and autoimmune disease [@niederlova2025imbalance].
 
 # Software Design
-`HLAfreq` was written in `python` rather than `R` to take advantage of `requests` and `bs4`
+`HLAfreq` was written in `Python` rather than `R` to take advantage of `requests` and `bs4`
 for AFND's recommended "automated access". After downloading, the data are returned in `pandas`
 dataframes rather than a custom class for familiarity and in line with Scientific-Python recommendations.
 
