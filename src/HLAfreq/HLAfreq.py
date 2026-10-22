@@ -48,7 +48,8 @@ def simulate_study(alleles, populations, locus):
 
 def makeURL(
     country="",
-    standard="s",
+    standard="",
+    allele="",
     locus="",
     resolution_pattern="bigger_equal_than",
     resolution=2,
@@ -104,37 +105,46 @@ def makeURL(
     Returns:
         str: URL to search allelefrequencies.net
     """
-    base = "https://www.allelefrequencies.net/hla6006a.asp?"
-    locus_type = "hla_locus_type=Classical&"
-    hla_locus = "hla_locus=%s&" % (locus)
-    country = "hla_country=%s&" % (country)
-    region = "hla_region=%s&" % (region)
-    ethnic = "hla_ethnic=%s&" % (ethnic)
-    study_type = "hla_study=%s&" % (study_type)
-    dataset_source = "hla_dataset_source=%s&" % (dataset_source)
-    sample_year = "hla_sample_year=%s&" % (sample_year)
-    sample_year_pattern = "hla_sample_year_pattern=%s&" % (sample_year_pattern)
-    sample_size = "hla_sample_size=%s&" % (sample_size)
-    sample_size_pattern = "hla_sample_size_pattern=%s&" % (sample_size_pattern)
-    hla_level_pattern = "hla_level_pattern=%s&" % (resolution_pattern)
-    hla_level = "hla_level=%s&" % (resolution)
-    standard = "standard=%s&" % standard
+    base = "https://www.allelefrequencies.net/api/hla/allele-frequencies/search?"
+    # locus_type = "hla_locus_type=Classical&"
+    if locus:
+        locus = "locus=%s&" % (locus)
+    if allele:
+        allele = "allele=%s&" % (allele)
+    if country:
+        country = "country=%s&" % (country)
+    if region:
+        region = "geographicalRegion=%s&" % (region)
+    if ethnic:
+        ethnic = "ethnicity=%s&" % (ethnic)
+    if study_type:
+        study_type = "typeStudy=%s&" % (study_type)
+    if dataset_source:
+        dataset_source = "dataset=%s&" % (dataset_source)
+    # sample_year = "hla_sample_year=%s&" % (sample_year)
+    # sample_year_pattern = "hla_sample_year_pattern=%s&" % (sample_year_pattern)
+    # sample_size = "hla_sample_size=%s&" % (sample_size)
+    # sample_size_pattern = "hla_sample_size_pattern=%s&" % (sample_size_pattern)
+    # hla_level_pattern = "hla_level_pattern=%s&" % (resolution_pattern)
+    # hla_level = "hla_level=%s&" % (resolution)
+    if standard:
+        standard = "populationStandard=%s&" % standard
+    # search_parameters = [hla_locus, allele, country, region, ethnic, study_type, dataset_source, standard,]
+    # search_parameters = [p for p in search_parameters if p]
+    # search_parameters = "".join(search_parameters)
     url = (
         base
-        + locus_type
-        + hla_locus
+        # + locus_type
+        + allele
+        + locus
         + country
-        + hla_level_pattern
-        + hla_level
-        + standard
+        # + hla_level_pattern
+        # + hla_level
         + region
         + ethnic
-        + study_type
+        + standard
         + dataset_source
-        + sample_year
-        + sample_year_pattern
-        + sample_size
-        + sample_size_pattern
+        + study_type
     )
     return url
 
