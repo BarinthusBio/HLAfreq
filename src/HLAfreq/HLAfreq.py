@@ -9,7 +9,6 @@ global HLA frequencies.
 """
 
 from collections.abc import Iterable
-from bs4 import BeautifulSoup
 import requests
 import pandas as pd
 import numpy as np
@@ -48,7 +47,8 @@ def simulate_study(alleles, populations, locus):
 
 def makeURL(
     country="",
-    standard="s",
+    standard="goldAndSilver",
+    allele="",
     locus="",
     resolution_pattern="bigger_equal_than",
     resolution=2,
@@ -104,37 +104,45 @@ def makeURL(
     Returns:
         str: URL to search allelefrequencies.net
     """
-    base = "https://www.allelefrequencies.net/hla6006a.asp?"
-    locus_type = "hla_locus_type=Classical&"
-    hla_locus = "hla_locus=%s&" % (locus)
-    country = "hla_country=%s&" % (country)
-    region = "hla_region=%s&" % (region)
-    ethnic = "hla_ethnic=%s&" % (ethnic)
-    study_type = "hla_study=%s&" % (study_type)
-    dataset_source = "hla_dataset_source=%s&" % (dataset_source)
-    sample_year = "hla_sample_year=%s&" % (sample_year)
-    sample_year_pattern = "hla_sample_year_pattern=%s&" % (sample_year_pattern)
-    sample_size = "hla_sample_size=%s&" % (sample_size)
-    sample_size_pattern = "hla_sample_size_pattern=%s&" % (sample_size_pattern)
-    hla_level_pattern = "hla_level_pattern=%s&" % (resolution_pattern)
-    hla_level = "hla_level=%s&" % (resolution)
-    standard = "standard=%s&" % standard
+    base = "https://www.allelefrequencies.net/api/hla/allele-frequencies/search?"
+    # locus_type = "hla_locus_type=Classical&"
+    if locus:
+        locus = "locus=%s&" % (locus)
+    if allele:
+        allele = "allele=%s&" % (allele)
+    if country:
+        country = "country=%s&" % (country)
+    if region:
+        region = "geographicalRegion=%s&" % (region)
+    if ethnic:
+        ethnic = "ethnicity=%s&" % (ethnic)
+    if study_type:
+        study_type = "typeStudy=%s&" % (study_type)
+    if dataset_source:
+        dataset_source = "dataset=%s&" % (dataset_source)
+    # sample_year = "hla_sample_year=%s&" % (sample_year)
+    # sample_year_pattern = "hla_sample_year_pattern=%s&" % (sample_year_pattern)
+    # sample_size = "hla_sample_size=%s&" % (sample_size)
+    # sample_size_pattern = "hla_sample_size_pattern=%s&" % (sample_size_pattern)
+    if resolution_pattern:
+        hla_level_pattern = "hla_level_pattern=%s&" % (resolution_pattern)
+    if resolution:
+        hla_level = "hla_level=%s&" % (resolution)
+    if standard:
+        standard = "populationStandard=%s&" % standard
     url = (
         base
-        + locus_type
-        + hla_locus
+        # + locus_type
+        + allele
+        + locus
         + country
-        + hla_level_pattern
-        + hla_level
-        + standard
+        # + hla_level_pattern
+        # + hla_level
         + region
         + ethnic
-        + study_type
+        + standard
         + dataset_source
-        + sample_year
-        + sample_year_pattern
-        + sample_size
-        + sample_size_pattern
+        + study_type
     )
     return url
 
@@ -180,32 +188,18 @@ def parseAF(bs):
     return df
 
 
-def Npages(bs):
-    """How many pages of results are there?
+def Npages(response):
+    """Return the total page count from an AFND JSON response.
 
     Args:
-        bs (bs4.BeautifulSoup): BS object of allelefrequencies.net results page
+        response (dict): JSON response from the AFND search endpoint.
 
     Returns:
         int: Total number of results pages
     """
-    # Get the table with number of pages
-    navtab = bs.find("div", {"id": "divGenNavig"}).find("table", {"class": "table10"})
-    if not navtab:
-        raise AssertionError(
-            "navtab does not evaluate to True. Check URL returns results in web browser."
-        )
-    # Get cell with ' of ' in
-    pagesOfN = [
-        td.get_text(strip=True) for td in navtab.find_all("td") if " of " in td.text
-    ]
-    # Check single cell returned
-    if not len(pagesOfN) == 1:
-        raise AssertionError("divGenNavig should contain 1 of not %s" % len(pagesOfN))
-    # Get total number of pages
-    N = pagesOfN[0].split("of ")[1]
-    N = int(N)
-    return N
+    if not isinstance(response, dict) or "totalPages" not in response:
+        raise ValueError("AFND response must contain 'totalPages'")
+    return int(response["totalPages"])
 
 
 def formatAF(AFtab, ignoreG=True):
@@ -250,37 +244,56 @@ def getAFdata(base_url, timeout=20, format=True, ignoreG=True):
     Returns:
         pd.DataFrame: allele frequency data parsed into a pandas dataframe
     """
-    # Get BS object from base search
+    # AFND's endpoint returns JSON records in ``content`` and pagination metadata.
     try:
-        bs = BeautifulSoup(requests.get(base_url, timeout=timeout).text, "html.parser")
-    except requests.exceptions.ReadTimeout as e:
+        response = requests.get(base_url, timeout=timeout)
+        response.raise_for_status()
+        payload = response.json()
+    except requests.exceptions.ReadTimeout:
         raise Exception(
             "Requests timeout, try a larger `timeout` value for `getAFdata()`"
         ) from None
-    # How many pages of results
-    N = Npages(bs)
-    print("%s pages of results" % N)
-    # iterate over pages, parse and combine data from each
-    tabs = []
-    for i in range(N):
-        # print (" Parsing page %s" %(i+1))
-        print(" Parsing page %s" % (i + 1), end="\r")
-        url = base_url + "page=" + str(i + 1)
-        try:
-            bs = BeautifulSoup(requests.get(url, timeout=timeout).text, "html.parser")
-        except requests.exceptions.ReadTimeout as e:
-            raise Exception(
-                "Requests timeout, try a larger `timeout` value for `getAFdata()`"
-            ) from None
-        tab = parseAF(bs)
-        tabs.append(tab)
-    print("Download complete")
-    tabs = pd.concat(tabs)
+    total_pages = Npages(payload)
+    if total_pages < 1:
+        records = []
+    else:
+        page_payloads = []
+        for page in range(1, total_pages + 1):
+            if page == 1 and payload.get("currentPage") == 1:
+                page_payload = payload
+            else:
+                try:
+                    page_response = requests.get(
+                        base_url, params={"currentPage": page}, timeout=timeout
+                    )
+                    page_response.raise_for_status()
+                    page_payload = page_response.json()
+                except requests.exceptions.ReadTimeout:
+                    raise Exception(
+                        "Requests timeout, try a larger `timeout` value for `getAFdata()`"
+                    ) from None
+            records_on_page = page_payload.get("content", [])
+            if not isinstance(records_on_page, list):
+                raise ValueError("AFND response must contain a list in the 'content' field")
+            page_payloads.extend(records_on_page)
+        records = page_payloads
+
+    tabs = pd.DataFrame.from_records(records)
+    if tabs.empty:
+        # Return the same core columns as a non-empty result.
+        tabs = pd.DataFrame(columns=["allele", "loci", "population", "allele_freq", "carriers%", "sample_size"])
+    else:
+        if "allele" not in tabs or "geneFrequency" not in tabs:
+            raise ValueError("AFND response records must contain 'allele' and 'geneFrequency'")
+        tabs["loci"] = tabs["allele"].str.split("*", n=1).str[0]
+        tabs["allele_freq"] = tabs["geneFrequency"]
+        tabs["sample_size"] = tabs["sampleSize"] if "sampleSize" in tabs else np.nan
+        # The API does not provide the old table's carrier percentage.
+        tabs["carriers%"] = np.nan
+        if "population" not in tabs:
+            tabs["population"] = np.nan
     if format:
-        try:
-            tabs = formatAF(tabs, ignoreG)
-        except AttributeError:
-            print("Formatting failed, non-numeric datatypes may remain.")
+        tabs = formatAF(tabs, ignoreG)
     return tabs
 
 

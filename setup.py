@@ -2,14 +2,14 @@ from setuptools import setup, find_packages
 
 setup(
     name="HLAfreq",
-    version="0.0.6",
+    version="1.0.0",
     url="https://github.com/BarinthusBio/HLAfreq",
     project_urls={
         'Documentaion': "https://barinthusbio.github.io/HLAfreq/HLAfreq.html",
         'Tracker': "https://github.com/BarinthusBio/HLAfreq/issues"
     },
     author="David Wells",
-    author_email="david.wells@BarinthusBio.co.uk",
+    author_email="dwells@eit.org",
     description="Download and combine HLA frequency data from multiple studies",
     long_description=open('README.md').read(),
     long_description_content_type="text/markdown",
